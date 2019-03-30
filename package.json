@@ -1,0 +1,23 @@
+{
+  "name": "analytics-img",
+  "version": "0.0.1",
+  "description": "Serves an image on a third party site, while recording it as a pageview in your own Google Analytics account",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "analytics",
+    "google",
+    "analytics"
+  ],
+  "author": "Jason Norwood-Young",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cookies": "^0.7.3",
+    "dotenv": "^7.0.0",
+    "universal-ga": "^1.2.0",
+    "uuid": "^3.3.2"
+  }
+}
