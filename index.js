@@ -32,23 +32,18 @@ class AnalyticsCollect {
             uid = uuid();
             cookies.set('uid', uid, { signed: true })
         }
-        console.log(req.headers)
         const url = Url.parse(req.url);
-        var endpoint = "";
-        if (url.pathname) {
-            endpoint = url.pathname.split("/").pop();
-        }
-        console.log({ url });
+        var hostname = Url.parse(process.env.URL);
         const data = {
             v: 1,
             tid: this.ga,
             uid,
             t: "pageview",            
             ua: req.headers["user-agent"],
-            uip: req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null),
+            uip: req.headers['x-forwarded-for'] || req.headers['X-Forwarded-For']  || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null),
             dr: req.headers.referer,
             dp: url.pathname,
-            dh: endpoint,
+            dh: hostname.host,
         }
         console.log(data);
         try {
