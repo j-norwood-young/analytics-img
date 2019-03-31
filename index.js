@@ -47,7 +47,7 @@ class AnalyticsCollect {
         }
         console.log(data);
         try {
-            const result = await axios.post(gaurl, data)
+            const result = await axios.get(gaurl, { params: data })
             console.log(result.status, result.statusText);
         } catch(err) {
             console.error(err);
