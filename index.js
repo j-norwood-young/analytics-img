@@ -4,6 +4,7 @@ const fs = require('fs')
 const Cookies = require('cookies')
 const uuid = require('uuid/v1')
 const axios = require("axios")
+const Url = require('url')
 
 if (!process.env.GA) {
     console.error("GA required");
@@ -32,6 +33,12 @@ class AnalyticsCollect {
             cookies.set('uid', uid, { signed: true })
         }
         console.log(req.headers)
+        const url = Url.parse(req.url);
+        var endpoint = "";
+        if (url.pathname) {
+            endpoint = url.pathname.split("/").pop();
+        }
+        console.log({ url });
         const data = {
             v: 1,
             tid: this.ga,
@@ -40,8 +47,8 @@ class AnalyticsCollect {
             ua: req.headers["user-agent"],
             uip: req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null),
             dr: req.headers.referer,
-            dp: "/stories/property-developer-rides-the-jobs-fund-train",
-            dh: "property-developer-rides-the-jobs-fund-train",
+            dp: url.pathname,
+            dh: endpoint,
         }
         console.log(data);
         try {
@@ -66,4 +73,4 @@ http.createServer((req, res) => {
     console.log(`Server listening ${ host }:${ port }`);
 });
 
-setInterval(() => { console.log(`Hits: ${ hits }`)}, 10000)
+if (process.env.REPORTINTERVAL) setInterval(() => { console.log(`Hits: ${ hits }`)}, process.env.REPORTINTERVAL)
