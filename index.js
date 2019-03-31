@@ -45,12 +45,12 @@ class AnalyticsCollect {
             dp: url.pathname,
             dh: hostname.host,
         }
-        console.log(data);
+        console.log(new Date(), "Data", data);
         try {
             const result = await axios.get(gaurl, { params: data })
-            console.log(result.status, result.statusText);
+            console.log(new Date(), "Result", result.status, result.statusText);
         } catch(err) {
-            console.error(err);
+            console.error(new Date(), err);
         }
     }
 }
@@ -65,7 +65,7 @@ http.createServer((req, res) => {
     fileStream.pipe(res);
     hits++;
 }).listen(port, host, () => {
-    console.log(`Server listening ${ host }:${ port }`);
+    console.log(new Date(), `Server listening ${ host }:${ port }`);
 });
 
-if (process.env.REPORTINTERVAL) setInterval(() => { console.log(`Hits: ${ hits }`)}, process.env.REPORTINTERVAL)
+if (process.env.REPORTINTERVAL) setInterval(() => { console.log(new Date(), "Hits", hits)}, process.env.REPORTINTERVAL)
