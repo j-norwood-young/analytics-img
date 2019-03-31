@@ -1,6 +1,6 @@
 PORT=4011
 HOST=127.0.0.1
-GA=UA-19375228-1
+GA=UA-12345
 SECRET=verysecret
 GAURL=https://www.google-analytics.com/collect
 URL=https://amabhungane.org
