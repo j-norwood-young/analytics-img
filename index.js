@@ -37,7 +37,7 @@ class AnalyticsCollect {
         const data = {
             v: 1,
             tid: this.ga,
-            uid,
+            cid: uid,
             t: "pageview",            
             ua: req.headers["user-agent"],
             uip: req.headers['x-forwarded-for'] || req.headers['X-Forwarded-For']  || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null),
@@ -48,6 +48,7 @@ class AnalyticsCollect {
         console.log(new Date(), "Data", data);
         try {
             const result = await axios.get(gaurl, { params: data })
+            // console.log(result.request.path);
             console.log(new Date(), "Result", result.status, result.statusText);
         } catch(err) {
             console.error(new Date(), err);
