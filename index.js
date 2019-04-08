@@ -2,7 +2,7 @@ require('dotenv').config()
 const http = require('http')
 const fs = require('fs')
 const Cookies = require('cookies')
-const uuid = require('uuid/v1')
+const uuid = require('uuid/v4')
 const axios = require("axios")
 const Url = require('url')
 
