@@ -60,11 +60,24 @@ const analytics = new AnalyticsCollect(process.env.GA);
 
 http.createServer((req, res) => {
     if (req.url == '/favicon.ico') return;
-    analytics.hit(req, res)
-    res.writeHead(200, { "Content-Type" : "image/png" })
-    const fileStream = fs.createReadStream(filename);
-    fileStream.pipe(res);
-    hits++;
+    const url = Url.parse(req.url);
+    if (url.query === "iframe") {
+        analytics.hit(req, res)
+        res.writeHead(200, { "Content-Type": "text/html" })
+        const fileStream = fs.createReadStream("./iframe.html");
+        fileStream.pipe(res);
+        hits++;
+    } else if (url.query === "nohit") {
+        res.writeHead(200, { "Content-Type": "image/png" })
+        const fileStream = fs.createReadStream(filename);
+        fileStream.pipe(res);
+    } else {
+        analytics.hit(req, res)
+        res.writeHead(200, { "Content-Type" : "image/png" })
+        const fileStream = fs.createReadStream(filename);
+        fileStream.pipe(res);
+        hits++;
+    }
 }).listen(port, host, () => {
     console.log(new Date(), `Server listening ${ host }:${ port }`);
 });
