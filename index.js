@@ -66,6 +66,8 @@ const iframe = iframe_template({
     img_height: process.env.IMG_HEIGHT,
 })
 
+const img = fs.readFileSync(filename)
+
 http.createServer((req, res) => {
     if (req.url == '/favicon.ico') return;
     const url = Url.parse(req.url);
@@ -77,13 +79,13 @@ http.createServer((req, res) => {
         hits++;
     } else if (url.query === "nohit") {
         res.writeHead(200, { "Content-Type": "image/png" })
-        const fileStream = fs.createReadStream(filename);
-        fileStream.pipe(res);
+        res.write(img);
+        res.end();
     } else {
         analytics.hit(req, res)
         res.writeHead(200, { "Content-Type" : "image/png" })
-        const fileStream = fs.createReadStream(filename);
-        fileStream.pipe(res);
+        res.write(img);
+        res.end();
         hits++;
     }
 }).listen(port, host, () => {
