@@ -5,6 +5,7 @@ const Cookies = require('cookies')
 const uuid = require('uuid/v4')
 const axios = require("axios")
 const Url = require('url')
+const template = require('lodash.template')
 
 if (!process.env.GA) {
     console.error("GA required");
@@ -58,14 +59,21 @@ class AnalyticsCollect {
 
 const analytics = new AnalyticsCollect(process.env.GA);
 
+const iframe_html = fs.readFileSync("./iframe.html");
+const iframe_template = template(iframe_html)
+const iframe = iframe_template({
+    img_width: process.env.IMG_WIDTH,
+    img_height: process.env.IMG_HEIGHT,
+})
+
 http.createServer((req, res) => {
     if (req.url == '/favicon.ico') return;
     const url = Url.parse(req.url);
     if (url.query === "iframe") {
         analytics.hit(req, res)
         res.writeHead(200, { "Content-Type": "text/html" })
-        const fileStream = fs.createReadStream("./iframe.html");
-        fileStream.pipe(res);
+        res.write(iframe);
+        res.end();
         hits++;
     } else if (url.query === "nohit") {
         res.writeHead(200, { "Content-Type": "image/png" })

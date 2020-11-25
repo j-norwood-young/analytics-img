@@ -5,4 +5,6 @@ SECRET=verysecret
 GAURL=https://www.google-analytics.com/collect
 URL=https://amabhungane.org
 FILENAME=./1px-transparent.png
+IMG_WIDTH=100px
+IMG_HEIGHT=100px
 REPORTINTERVAL=10000
